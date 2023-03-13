@@ -159,6 +159,9 @@ class Answer(Tables):
             data = [data]
         result = set()
         for answer in data:
+            error = answer.get('error', 0)
+            if error != 0:
+                continue
             uid = answer.get('id', 0)
             question_id = answer.get('question').get('id', 0)
             author_id = answer.get('author').get('id', '')

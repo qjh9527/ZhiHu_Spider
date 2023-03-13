@@ -14,8 +14,9 @@ answer_list = []
 user_list = []
 question_list = []
 for i in answer:
-    url = url + i + '?include=created_time,updated_time,voteup_count,favlists_count,comment_count,content,is_labeled,author.badge_v2'
-    resp = httpx.get(url=url)
+    answer_url = url + i + '?include=created_time,updated_time,voteup_count,favlists_count,comment_count,content,is_labeled,author.badge_v2'
+    print(answer_url)
+    resp = httpx.get(url=answer_url)
     data = resp.json()
     answer_list.append(data)
     user_list.append(data.get('author'))
