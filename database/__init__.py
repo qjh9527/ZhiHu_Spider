@@ -131,13 +131,15 @@ class User(Tables):
 
 class Answer(Tables):
     name = 'answer'
-    keys = ['uid', 'question_id', 'author_id', 'created_time', 'updated_time', 'voteup_count', 'favlists_count',
+    keys = ['uid', 'question_id', 'author_id', 'name', 'created_time', 'updated_time', 'voteup_count', 'favlists_count',
             'comment_count', 'url', 'content', 'content_text', 'is_labeled', 'is_md']
     types = [
         ('id', 'bigint', 'auto_increment', 'primary key'),
         ('uid', 'bigint', "comment '回答uid'"),
         ('question_id', 'bigint', "comment '问题uid'"),
         ('author_id', 'varchar(64)', "comment '回答作者uid'"),
+        ('name', 'varchar(32)', "comment '回答作者昵称'"),
+        ('url_token', 'varchar(32)', "comment '回答作者url_token'"),
         ('created_time', 'timestamp', "comment '回答创建时间'"),
         ('updated_time', 'timestamp', "comment '修改时间'"),
         ('voteup_count', 'bigint', "comment '赞同数量'"),
@@ -166,6 +168,7 @@ class Answer(Tables):
             uid = answer.get('id', 0)
             question_id = answer.get('question').get('id', 0)
             author_id = answer.get('author').get('id', '')
+            author_id = answer.get('author').get('id', '')  # TODO
             created_time = self._fmt_time(answer.get('created_time', '0'))
             updated_time = self._fmt_time(answer.get('updated_time', '0'))
             content = html.escape(answer.get('content', ''))
