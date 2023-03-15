@@ -97,14 +97,15 @@ class Topic(Tables):
 
 class User(Tables):
     name = 'user'
-    keys = ['uid', 'name', 'gender', 'user_type', 'url', 'badge']
+    keys = ['uid', 'name', 'gender', 'user_type', 'url_api', 'url_token', 'badge']
     types = [
         ('id', 'bigint', 'auto_increment', 'primary key'),
         ('uid', 'varchar(64)', "comment '用户id'"),
         ('name', 'varchar(32)', "comment '昵称'"),
         ('gender', 'smallint', "comment '性别'"),
         ('user_type', 'varchar(32)', "comment '用户类型'"),
-        ('url', 'text', "comment '用户url'"),
+        ('url_api', 'text', "comment '用户url'"),
+        ('url_token', 'text', "comment '用户url_token'"),  # 可生成user的主页链接
         ('badge', 'varchar(32)', "comment '头衔'")
     ]
 
@@ -122,24 +123,23 @@ class User(Tables):
             uid = author.get('id', '')
             gender = author.get('gender', -1)
             user_type = author.get('user_type', '')
-            url = author.get('url', '')
+            url_api = author.get('url', '')
+            url_token = author.get('url_token', '')
             badge = ', '.join([i.get('description', '') for i in author.get('badge')]) if author.get('badge',
                                                                                                      None) else ''
-            result.add((uid, name, gender, user_type, url, badge))
+            result.add((uid, name, gender, user_type, url_api, url_token, badge))
         return list(result)
 
 
 class Answer(Tables):
     name = 'answer'
-    keys = ['uid', 'question_id', 'author_id', 'name', 'created_time', 'updated_time', 'voteup_count', 'favlists_count',
-            'comment_count', 'url', 'content', 'content_text', 'is_labeled', 'is_md']
+    keys = ['uid', 'question_id', 'author_id', 'created_time', 'updated_time', 'voteup_count', 'favlists_count',
+            'comment_count', 'url', 'content', 'content_text', 'is_labeled']
     types = [
         ('id', 'bigint', 'auto_increment', 'primary key'),
         ('uid', 'bigint', "comment '回答uid'"),
         ('question_id', 'bigint', "comment '问题uid'"),
         ('author_id', 'varchar(64)', "comment '回答作者uid'"),
-        ('name', 'varchar(32)', "comment '回答作者昵称'"),
-        ('url_token', 'varchar(32)', "comment '回答作者url_token'"),
         ('created_time', 'timestamp', "comment '回答创建时间'"),
         ('updated_time', 'timestamp', "comment '修改时间'"),
         ('voteup_count', 'bigint', "comment '赞同数量'"),
@@ -149,7 +149,6 @@ class Answer(Tables):
         ('content', 'text', "comment '内容'"),
         ('content_text', 'text', "comment '纯文本'"),
         ('is_labeled', 'bool'),
-        ('is_md', 'bool', "comment '是否已保存为md格式'")
     ]
 
     description = '回答信息'
@@ -168,7 +167,6 @@ class Answer(Tables):
             uid = answer.get('id', 0)
             question_id = answer.get('question').get('id', 0)
             author_id = answer.get('author').get('id', '')
-            author_id = answer.get('author').get('id', '')  # TODO
             created_time = self._fmt_time(answer.get('created_time', '0'))
             updated_time = self._fmt_time(answer.get('updated_time', '0'))
             content = html.escape(answer.get('content', ''))
@@ -178,10 +176,9 @@ class Answer(Tables):
             comment_count = answer.get('comment_count', -1)
             url = answer.get('url', '')
             is_labeled = self._fmt_bool(answer.get('is_labeled', False))
-            is_md = 0
             result.add(
                 (uid, question_id, author_id, created_time, updated_time, voteup_count, favlists_count, comment_count,
-                 url, content, content_text, is_labeled, is_md))
+                 url, content, content_text, is_labeled))
         return list(result)
 
 

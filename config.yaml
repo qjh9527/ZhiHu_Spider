@@ -1,5 +1,5 @@
 database:
-  dbname: zhihu
+  dbname: zhihu_v1
   host: localhost
   username: root
   password: '123456'
