@@ -132,7 +132,7 @@ class User(Tables):
 class Answer(Tables):
     name = 'answer'
     keys = ['uid', 'question_id', 'author_id', 'created_time', 'updated_time', 'voteup_count', 'favlists_count',
-            'comment_count', 'url', 'content', 'content_text', 'is_labeled']
+            'comment_count', 'url', 'content', 'content_text', 'is_labeled', 'is_md']
     types = [
         ('id', 'bigint', 'auto_increment', 'primary key'),
         ('uid', 'bigint', "comment '回答uid'"),
@@ -146,7 +146,8 @@ class Answer(Tables):
         ('url', 'varchar(256)', "comment '回答链接'"),
         ('content', 'text', "comment '内容'"),
         ('content_text', 'text', "comment '纯文本'"),
-        ('is_labeled', 'bool')
+        ('is_labeled', 'bool'),
+        ('is_md', 'bool', "comment '是否已保存为md格式'")
     ]
 
     description = '回答信息'
@@ -174,9 +175,10 @@ class Answer(Tables):
             comment_count = answer.get('comment_count', -1)
             url = answer.get('url', '')
             is_labeled = self._fmt_bool(answer.get('is_labeled', False))
+            is_md = 0
             result.add(
                 (uid, question_id, author_id, created_time, updated_time, voteup_count, favlists_count, comment_count,
-                 url, content, content_text, is_labeled))
+                 url, content, content_text, is_labeled, is_md))
         return list(result)
 
 

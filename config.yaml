@@ -1,5 +1,5 @@
 database:
-  dbname:
-  host:
-  username:
-  password:
+  dbname: zhihu
+  host: localhost
+  username: root
+  password: '123456'

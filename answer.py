@@ -1,10 +1,16 @@
 import httpx
-
+from tools import get_answer_id
 from database import SQL, Answer, User, Question
+import time
+from tqdm import tqdm
 
-answer = ['2569033692', '2570936374', '2570374800', '2569272197', '2567391241', '2570192173', '2571757659',
-          '2569095822', '2569040273', '2568145752', '2569145098', '2569992345', '2570992636', '2585296739',
-          '2568892041']
+f = open(r'D:\Code\Spider\ZhiHu_Spider-master\test\favorites_2023_3_13.html', 'r', encoding='utf8')
+text = f.read()
+f.close()
+
+
+answer = get_answer_id(text)
+print(answer)
 
 sql = SQL()
 
@@ -22,12 +28,14 @@ for i in answer:
     user_list.append(data.get('author'))
     question_list.append(data.get('question'))
 
-# if answer_list:
-#     sql.insert_into('answer', Answer, answer_list)
-#     pass
-# if user_list:
-#     sql.insert_into('user', User, user_list)
-#     pass
+if answer_list:
+    sql.insert_into('answer', Answer, answer_list)
+    pass
+if user_list:
+    sql.insert_into('user', User, user_list)
+    pass
 if question_list:
     sql.insert_into('question', Question, question_list)
     pass
+
+print('over!')
