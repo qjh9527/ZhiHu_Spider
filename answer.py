@@ -21,6 +21,9 @@ def answer2db(text, output):
         output.append(str(f'<a href="{answer_url}"><span style=" text-decoration: underline; color:#0000ff;">{answer_url}</span></a>'))
         resp = httpx.get(url=answer_url)
         data = resp.json()
+        if data.get('error'):
+            output.append('你似乎来到了没有知识存在的荒原')
+            continue
         answer_list.append(data)
         user_list.append(data.get('author'))
         question_list.append(data.get('question'))
@@ -35,3 +38,4 @@ def answer2db(text, output):
     if question_list:
         sql.insert_into('question', Question, question_list)
         pass
+

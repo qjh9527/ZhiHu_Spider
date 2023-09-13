@@ -38,8 +38,8 @@ def create_file(output, mode='Markdown'):
 
         question_title = question_title.replace('?', '？')
         md_title = f'{question_title} - {user_name} - {answer_uid}.{suffix}'  # 文件名
-        # if md_title.replace('\n', '') in os.listdir(root):
-        #     continue
+        if md_title.replace('\n', '') in os.listdir(root):
+            continue
 
         output.append(str(md_title))
         print(md_title)

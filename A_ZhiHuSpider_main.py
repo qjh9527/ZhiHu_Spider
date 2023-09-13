@@ -1,5 +1,7 @@
 # @Time : 2023/3/18 16:59
 import sys
+
+from PySide6 import QtGui
 from PySide6.QtWidgets import QApplication, QMainWindow
 from ui.ZhihuSpider import Ui_MainWindow
 
@@ -14,6 +16,11 @@ class ZhiHuSpider(QMainWindow):
         self.ui.setupUi(self)
         # 设置窗口标题
         self.setWindowTitle('爬取保存知乎答案小工具')
+
+        # 窗口图标
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("./images/zhihu.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
 
         # 剪切板对象
         self.clipboard = QApplication.clipboard()
